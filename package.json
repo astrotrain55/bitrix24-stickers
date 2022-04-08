@@ -3,11 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --host localhost",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "grid": "node smartgrid.js",
+    "pages": "node gh-pages.js",
+    "public": "npm run build && npm run pages",
+    "reset": "git fetch --all && git reset --hard origin/master",
+    "caniuse": "npx browserslist@latest --update-db updates"
   },
   "dependencies": {
+    "copy-to-clipboard": "^3.3.1",
     "core-js": "^3.8.3",
     "vue": "^3.2.13"
   },
@@ -22,6 +28,8 @@
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-vue": "^8.0.3",
     "eslint-plugin-vuejs-accessibility": "^1.1.0",
+    "gh-pages": "^3.2.3",
+    "smart-grid": "^2.1.2",
     "stylus": "^0.55.0",
     "stylus-loader": "^6.1.0"
   }

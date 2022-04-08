@@ -22,3 +22,7 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### Links
+* [Material Design Icons](https://materialdesignicons.com/)
+* [Как добавить свои смайлики в Мессенджер](https://helpdesk.bitrix24.ru/open/5270441/)
