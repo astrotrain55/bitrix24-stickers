@@ -1,5 +1,5 @@
 <template>
-  <div class="grid">
+  <div v-if="list.length" class="grid">
     <h2 class="grid__title">
       <span>{{ title }}</span>
       <a v-if="link" :href="link" target="_blank">

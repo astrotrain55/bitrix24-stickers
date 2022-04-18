@@ -1,30 +1,38 @@
 <template>
-  <div class="card" :title="title">
-    <app-icon
-      class="card__close"
-      name="close-circle"
-      @click.stop="$emit('close')"
-    ></app-icon>
-    <label class="card__label">
+  <div class="card" :class="{ disabled: !active }" :title="title">
+    <header class="card__header">
+      <app-icon
+        name="close-circle"
+        @click.stop="$emit('close')"
+      ></app-icon>
+      <input
+        v-model="active"
+        :id="id"
+        type="checkbox"
+        @click="$emit('toggle', $event.target.checked)"
+      >
+    </header>
+    <label :for="id" class="card__label">
       <img
         class="card__image"
         :src="icon"
         :alt="title"
-      >
-      <input
-        class="card__toggle"
-        type="checkbox"
-        :checked="selected"
-        @click="$emit('toggle', $event.target.checked)"
       >
     </label>
   </div>
 </template>
 
 <script>
+import { v4 as uuid } from 'uuid';
 import AppIcon from './Icon.vue';
 
 export default {
+  data() {
+    return {
+      id: uuid(),
+      active: this.selected,
+    };
+  },
   props: {
     icon: {
       type: String,
@@ -51,24 +59,24 @@ export default {
 
 .card
   position relative
+  text-align center
+  padding 10px
+  border-radius 4px
   box-shadow 0 3px 1px -2px rgba(0,0,0,.2),
              0 2px 2px 0 rgba(0,0,0,.14),
              0 1px 5px 0 rgba(0,0,0,.12)
-  border-radius 4px
+  &.disabled
+    opacity .5
+  &__header
+    display flex
+    justify-content space-between
+    align-content center
+    margin-bottom 5px
   &__label
-    display block
-    text-align center
-    padding 12px
+    display inline-block
+    max-width 200px
   &__image
     max-width 100%
     height auto
-  &__close
     cursor pointer
-    position absolute
-    top 12px
-    left 12px
-  &__toggle
-    position absolute
-    top 12px
-    right 12px
 </style>

@@ -12,8 +12,8 @@
   <main class="page">
     <div class="l-wrapper">
       <app-grid
-        :title="smiles.title"
-        :list="smiles.list"
+        :title="customStickers.title"
+        :list="customStickers.list"
       ></app-grid>
       <app-grid
         v-for="pack in stickers"
@@ -31,25 +31,26 @@ import copy from 'copy-to-clipboard';
 import AppPanel from './components/Panel.vue';
 import AppGrid from './components/Grid.vue';
 import stickers from './assets/stickers.json';
-import crazy2 from './assets/smiles/crazy2.gif';
 
 export default {
   methods: {
     getIcon({ icon, size = 100, title = 'Noname' }) {
-      return `[icon=${icon} size=${size} title=${title}]`;
+      const fullPath = [window.location.origin, window.location.pathname, icon].join('');
+      const path = !icon.includes(window.location.protocol) ? fullPath : icon;
+      return `[icon=${path} size=${size} title=${title}]`;
     },
     onCopy() {
       copy(this.text);
     },
-    onAdd() {
-      console.log('add');
+    onAdd(sticker) {
+      this.customStickers.list.push(sticker);
     },
   },
   computed: {
     text() {
       const text = [];
 
-      [this.smiles, ...stickers].forEach((pack) => {
+      [this.customStickers, ...stickers].forEach((pack) => {
         pack.list.forEach((sticker) => {
           text.push(this.getIcon(sticker));
         });
@@ -61,15 +62,9 @@ export default {
   data() {
     return {
       stickers,
-      smiles: {
-        title: 'Колобки',
-        list: [
-          {
-            title: 'crazy2',
-            icon: crazy2,
-            size: 27,
-          },
-        ],
+      customStickers: {
+        title: 'Свои стикеры',
+        list: [],
       },
     };
   },
