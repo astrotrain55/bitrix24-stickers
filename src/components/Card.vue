@@ -2,8 +2,9 @@
   <div class="card" :class="{ disabled: !active }" :title="title">
     <header class="card__header">
       <app-icon
+        class="card__icon"
         name="close-circle"
-        @click.stop="$emit('close')"
+        @click.stop="$emit('remove')"
       ></app-icon>
       <input
         v-model="active"
@@ -58,13 +59,7 @@ export default {
 @require '~@/assets/smartgrid.styl'
 
 .card
-  position relative
   text-align center
-  padding 10px
-  border-radius 4px
-  box-shadow 0 3px 1px -2px rgba(0,0,0,.2),
-             0 2px 2px 0 rgba(0,0,0,.14),
-             0 1px 5px 0 rgba(0,0,0,.12)
   &.disabled
     opacity .5
   &__header
@@ -72,6 +67,8 @@ export default {
     justify-content space-between
     align-content center
     margin-bottom 5px
+  &__icon
+    cursor pointer
   &__label
     display inline-block
     max-width 200px

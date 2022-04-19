@@ -4,14 +4,14 @@
       <slot></slot>
     </div>
     <div class="panel__item right">
-      <app-button icon="content-copy" @click="$emit('copy')">Копировать код</app-button>
-      <app-button icon="plus" @click="popup = true">Добавить стикер</app-button>
+      <app-button icon="content-copy" @click="$emit('copy-code')">Копировать код</app-button>
+      <app-button icon="plus" @click="$emit('open-popup')">Добавить стикер</app-button>
     </div>
     <teleport to="#modals">
       <app-popup
-        v-if="popup"
-        @add="$emit('add', $event)"
-        @close="popup = false"
+        v-if="isPopup"
+        @add="$emit('add-sticker', $event)"
+        @close="$emit('close-popup')"
       ></app-popup>
     </teleport>
   </div>
@@ -22,10 +22,11 @@ import AppButton from './Button.vue';
 import AppPopup from './Popup.vue';
 
 export default {
-  data() {
-    return {
-      popup: false,
-    };
+  props: {
+    isPopup: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: {
     AppButton,

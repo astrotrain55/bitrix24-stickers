@@ -1,8 +1,8 @@
 <template>
-  <div v-if="list.length" class="grid">
+  <div class="grid">
     <h2 class="grid__title">
       <span>{{ title }}</span>
-      <a v-if="link" :href="link" target="_blank">
+      <a v-if="link" :href="link" target="_blank" aria-label="Ссылка на стикерпак">
         <app-icon name="open-in-new"></app-icon>
       </a>
     </h2>
@@ -14,9 +14,14 @@
       :size="sticker.size"
       selected
       class="grid__item"
-      @close="onClose(sticker)"
+      @remove="$emit('remove-sticker', sticker)"
       @toggle="onToggle(sticker, $event)"
     ></app-card>
+    <div
+      v-if="isAdd"
+      class="grid__item add"
+      @click="$emit('open-popup')"
+    >+</div>
   </div>
 </template>
 
@@ -45,6 +50,10 @@ export default {
     link: {
       type: String,
       default: '',
+    },
+    isAdd: {
+      type: Boolean,
+      default: false,
     },
   },
   components: {
@@ -75,6 +84,19 @@ export default {
     col-size(12)
     col-size-w1000(4.8)
     margin-bottom $offset
+    padding 10px
+    border-radius 4px
+    box-shadow 0 3px 1px -2px rgba(0,0,0,.2),
+               0 2px 2px 0 rgba(0,0,0,.14),
+               0 1px 5px 0 rgba(0,0,0,.12)
     +from(1000px)
       margin-bottom $offset_w1000
+    &.add
+      display flex
+      justify-content center
+      align-items center
+      font-size 100px
+      cursor pointer
+      &:hover
+        background-color rgba(#000000, .3)
 </style>

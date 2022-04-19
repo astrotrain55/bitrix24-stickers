@@ -2,8 +2,11 @@
   <header class="header">
     <div class="l-wrapper">
       <app-panel
-        @copy="onCopy"
-        @add="onAdd"
+        :is-popup="popup"
+        @copy-code="onCopy"
+        @add-sticker="onAddSticker"
+        @open-popup="popup = true"
+        @close-popup="popup = false"
       >
         <h1 class="header__title">bitrix24-stickers</h1>
       </app-panel>
@@ -14,6 +17,9 @@
       <app-grid
         :title="customStickers.title"
         :list="customStickers.list"
+        is-add
+        @open-popup="popup = true"
+        @remove-sticker="onRemoveSticker"
       ></app-grid>
       <app-grid
         v-for="pack in stickers"
@@ -31,19 +37,29 @@ import copy from 'copy-to-clipboard';
 import AppPanel from './components/Panel.vue';
 import AppGrid from './components/Grid.vue';
 import stickers from './assets/stickers.json';
+import api from './api';
 
 export default {
   methods: {
     getIcon({ icon, size = 100, title = 'Noname' }) {
       const fullPath = [window.location.origin, window.location.pathname, icon].join('');
-      const path = !icon.includes(window.location.protocol) ? fullPath : icon;
+      const path = icon.includes('http') ? icon : fullPath;
       return `[icon=${path} size=${size} title=${title}]`;
     },
     onCopy() {
       copy(this.text);
     },
-    onAdd(sticker) {
+    onSave() {
+      api.set(this.customStickers.list);
+    },
+    onAddSticker(sticker) {
       this.customStickers.list.push(sticker);
+      this.popup = false;
+      this.onSave();
+    },
+    onRemoveSticker(sticker) {
+      this.customStickers.list = this.customStickers.list.filter((item) => item !== sticker);
+      this.onSave();
     },
   },
   computed: {
@@ -64,8 +80,9 @@ export default {
       stickers,
       customStickers: {
         title: 'Свои стикеры',
-        list: [],
+        list: api.get(),
       },
+      popup: false,
     };
   },
   components: {
